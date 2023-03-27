@@ -4,9 +4,9 @@ An attack script created as an college assignment.
 
 ## Created By
 
-Ashok Kuikel
-Pragun Bajracharya
-Sabin Mahat
+- Ashok Kuikel
+- Pragun Bajracharya
+- Sabin Mahat
 
 ---
 
