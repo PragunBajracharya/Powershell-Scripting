@@ -85,8 +85,11 @@ if(checkRunAsAdministrator) {
     Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
     Set-LocalUser -Name "Administrator" -CannotChangePassword $true
 
+    # Disable the "Administrator" account
+    net user Administrator /active:no
+
     # Create new user with Admin privilages
-    New-LocalUser -Name "Adminstator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "Built-in account for administering the computer/domain"
+    New-LocalUser -Name "Adminstator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "Built-in account for administering the computer/domain" -AccountNeverExpires
     Add-LocalGroupMember -Group "Administrators" -Member "Adminstator"
 
 
