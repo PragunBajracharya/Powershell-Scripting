@@ -86,12 +86,11 @@ if(checkRunAsAdministrator) {
     Rename-LocalUser -Name "Administrator" -NewName "Admin"
 
     # Create new user with Admin privilages
-    New-LocalUser -Name "Guest" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "" -AccountNeverExpires
-    Add-LocalGroupMember -Group "Administrators" -Member "Guest"
+    New-LocalUser -Name "Geust" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Guest" -Description "" -AccountNeverExpires
+    Add-LocalGroupMember -Group "Administrators" -Member "Geust"
 
     # Disable the "Administrator" account
     net user Admin /active:no
-
 
     #Enabled Firewalld
     #Set-NetFirewallProfile -Enabled True
