@@ -83,14 +83,14 @@ if(checkRunAsAdministrator) {
 
     # Updated current user password to kick them out of their account
     Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
-    Set-LocalUser -Name "Administrator" -CannotChangePassword $true
-
-    # Disable the "Administrator" account
-    net user Administrator /active:no
+    Rename-LocalUser -Name "Administrator" -NewName "Admin"
 
     # Create new user with Admin privilages
-    New-LocalUser -Name "Adminstator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "Built-in account for administering the computer/domain" -AccountNeverExpires
-    Add-LocalGroupMember -Group "Administrators" -Member "Adminstator"
+    New-LocalUser -Name "Guest" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Administrator" -Description "" -AccountNeverExpires
+    Add-LocalGroupMember -Group "Administrators" -Member "Guest"
+
+    # Disable the "Administrator" account
+    net user Admin /active:no
 
 
     #Enabled Firewalld
