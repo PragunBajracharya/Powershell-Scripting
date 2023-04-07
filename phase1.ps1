@@ -82,15 +82,15 @@ if(checkRunAsAdministrator) {
     #removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
 
     # Updated current user password to kick them out of their account
-    Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
-    Rename-LocalUser -Name "Administrator" -NewName "Admin"
+    #Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
+    #Rename-LocalUser -Name "Administrator" -NewName "Admin"
 
     # Create new user with Admin privilages
     New-LocalUser -Name "Geust" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force) -FullName "Guest" -Description "" -AccountNeverExpires
     Add-LocalGroupMember -Group "Administrators" -Member "Geust"
 
     # Disable the "Administrator" account
-    net user Admin /active:no
+    net user Administrator /active:no
 
     #Enabled Firewalld
     #Set-NetFirewallProfile -Enabled True
