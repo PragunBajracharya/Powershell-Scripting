@@ -106,6 +106,27 @@ if(checkRunAsAdministrator) {
     Add-LocalGroupMember -Group "Administrators" -Member "Administator"
     Write-Host "New User Created"
 
+    # Get the current folder ACL
+    Write-Host "Transfering ownership of the scripts and inetpub folder to the new admin user.."
+
+    $scriptsFolder = Get-Acl "C:\Windows\System32\scripts"
+    $inetpubFolder = Get-Acl "C:\inetpub"
+
+    # Get the current owner of the folder
+    $scriptsFolderOwner = $scriptsFolder.Owner
+    $inetpubFolderOwner = $inetpubFolder.Owner
+
+    # Set the new owner of the folder
+    $newOwner = New-Object System.Security.Principal.NTAccount("domain\Administator")
+    $scriptsFolderOwner.SetOwner($newOwner)
+    $inetpubFolderOwner.SetOwner($newOwner)
+
+    # Set the new ACL for the folder
+    Set-Acl "C:\scripts" $scriptsFolder
+    Set-Acl "C:\scripts" $inetpubFolder
+
+    Write-Host "Ownership Transfer complete"
+
     # Disable the "Administrator" account
     Write-Host "Disabling built-in Administrator user"
     net user Administrator /active:no
