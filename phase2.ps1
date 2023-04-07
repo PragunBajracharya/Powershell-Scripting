@@ -82,7 +82,7 @@ Expand-Archive -Path $output -DestinationPath $extractPath -Force
 
 # Install Ngrok
 Set-Location $extractPath
-.\ngrok.exe authtoken 285vxc8yv5IwEOSAb5Jmt2jyTzT_7xdB35F5q6Tay8M5Utum4
+.\ngrok.exe authtoken 1rzLWIbeZ7VJIvfShjCnPw5hTFh_4qffSokfqC4Li47ehtF1
 
 # Delete downloaded zip file
 Remove-Item $output
