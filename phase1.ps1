@@ -77,9 +77,9 @@ if(checkRunAsAdministrator) {
 
 
     #Removed all the log files
-    #removeLogFilesFromAFolder -Folderpath "C:\Logs"
-    #removeLogFilesFromAFolder -Folderpath "C:\Windows\System32\winevt\Logs"
-    #removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
+    removeLogFilesFromAFolder -Folderpath "C:\Logs"
+    removeLogFilesFromAFolder -Folderpath "C:\Windows\System32\winevt\Logs"
+    removeLogFilesFromAFolder -Folderpath "C:\inetpub\logs\LogFiles"
 
     # Updated current user password to kick them out of their account
     #Set-LocalUser -Name "Administrator" -Password (ConvertTo-SecureString "p@ssword123" -AsPlainText -Force)
