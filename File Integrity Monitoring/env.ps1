@@ -1,0 +1,6 @@
+$env:SmtpServer = "your_smtp_server"
+$env:SmtpPort = "your_smtp_port"
+$env:SmtpUsername = "your_smtp_username"
+$env:SmtpPassword = "your_smtp_password"
+$env:SenderEmail = "your_sender_email@example.com"
+$env:RecipientEmail = "your_recipient_email@example.com"
